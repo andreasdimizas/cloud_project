@@ -11,17 +11,35 @@ services:
       #- "8080:8080"
     volumes:
       - ./myblog:/myblog/
+  yt-local:
+    build:
+      context: ./
+      dockerfile: yt.dockerfile
+    working_dir: /youtube-local
+    command: sh -c "python3 server.py"
+    networks:
+      - my-network
+
   nginx:
     image: nginx
     depends_on: 
       - zola
+      - yt-local
     ports:
       - "80:80"
     volumes:
       - ./myblog/public:/usr/share/nginx/html
       - ./site.conf:/etc/nginx/conf.d
+    networks:
+      - my-network
 
+                                          
 volumes:
   myblog:
   public:
   site.conf:
+
+networks:
+  my-network:
+
+
