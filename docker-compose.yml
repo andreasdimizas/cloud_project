@@ -1,0 +1,27 @@
+version: '3'
+services:
+  zola:
+    build:
+      context: ./
+      dockerfile: dockerfile
+    working_dir: /myblog
+    command: sh -c "zola build"
+      #command: sh -c "zola serve --interface 0.0.0.0 --port 8080"
+      #ports:
+      #- "8080:8080"
+    volumes:
+      - ./myblog:/myblog/
+  nginx:
+    image: nginx
+    depends_on: 
+      - zola
+    ports:
+      - "80:80"
+    volumes:
+      - ./myblog/public:/usr/share/nginx/html
+      - ./site.conf:/etc/nginx/conf.d
+
+volumes:
+  myblog:
+  public:
+  site.conf:
