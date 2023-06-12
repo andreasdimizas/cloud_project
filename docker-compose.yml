@@ -11,12 +11,15 @@ services:
       #- "8080:8080"
     volumes:
       - ./myblog:/myblog/
+
   yt-local:
     build:
       context: ./
       dockerfile: yt.dockerfile
     working_dir: /youtube-local
     command: sh -c "python3 server.py"
+    ports:
+      - "0.0.0.0:8080:8080"
     networks:
       - my-network
 
